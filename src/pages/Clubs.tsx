@@ -3,7 +3,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink, Mail } from "lucide-react";
+import { HandHeart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchClubs } from "@/data/clubs";
 import { Link } from "react-router-dom";
@@ -51,36 +51,35 @@ const Clubs = () => {
                   <CardHeader>
                     <div className="flex items-center justify-between gap-3">
                       <CardTitle>{club.name}</CardTitle>
-                      {club.supportNeeded ? (
+                      {club.supportNeeded && (
                         <Badge variant="destructive">Destek gerekiyor</Badge>
-                      ) : (
-                        <Badge variant="secondary">Destek yok</Badge>
                       )}
                     </div>
                     <CardDescription>{club.shortInfo}</CardDescription>
                   </CardHeader>
-                  <CardContent className="flex flex-wrap gap-3">
+                  <CardContent className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <HandHeart size={16} />
+                      <span>Gerekli Destek:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {club.supportTypes.length > 0 ? (
+                          club.supportTypes.map((type) => (
+                            <Badge key={type} variant="secondary">
+                              {type}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="secondary">Belirtilmedi</Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
                     <Button asChild variant="outline">
                       <Link to={`/clubs/${club.slug}`}>
                         Detay
                       </Link>
                     </Button>
-                    {club.websiteUrl && (
-                      <Button asChild variant="outline">
-                        <a href={club.websiteUrl} target="_blank" rel="noreferrer">
-                          <ExternalLink />
-                          Website
-                        </a>
-                      </Button>
-                    )}
-                    {club.contactUrl && (
-                      <Button asChild variant="secondary">
-                        <a href={club.contactUrl}>
-                          <Mail />
-                          İletişim
-                        </a>
-                      </Button>
-                    )}
+                    </div>
                   </CardContent>
                 </Card>
                 ))}

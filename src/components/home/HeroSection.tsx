@@ -6,6 +6,9 @@ const HeroSection = () => {
     <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background py-20 lg:py-32">
       <div className="container">
         <div className="mx-auto max-w-4xl text-center">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-white/70">
+            DEMO Sayfasıdır. Çok yakında sizlerleyiz!
+          </p>
           <div className="mb-8 flex justify-center">
             <img
               src="/logo.png"
@@ -33,8 +36,8 @@ const HeroSection = () => {
               Topluluğa Katıl
               <ArrowRight size={18} />
             </Button>
-            <Button size="lg" variant="outline">
-              Daha Fazla Bilgi
+            <Button size="lg" variant="outline" asChild>
+              <a href="#how-it-works">Beni Oku!</a>
             </Button>
           </div>
         </div>

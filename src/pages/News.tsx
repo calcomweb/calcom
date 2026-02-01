@@ -6,39 +6,9 @@ import { Calendar } from "lucide-react";
 const newsItems = [
   {
     id: 1,
-    title: "2024-2025 Eğitim Yılı Açılış Töreni",
-    summary: "Yeni eğitim yılı heyecanla başladı! Açılış töreninde okul müdürümüz gelecek döneme ilişkin hedeflerimizi paylaştı.",
-    date: "15 Eylül 2024"
-  },
-  {
-    id: 2,
-    title: "Almanca Dil Olimpiyatları Başarısı",
-    summary: "Öğrencilerimiz Almanca Dil Olimpiyatları'nda üstün başarı göstererek okumuzun gururu oldular.",
-    date: "10 Eylül 2024"
-  },
-  {
-    id: 3,
-    title: "CALMED Mentorluk Programı Başvuruları Açıldı",
-    summary: "Mezunlarımızın öğrencilerimize rehberlik ettiği mentorluk programı için başvurular başladı.",
-    date: "5 Eylül 2024"
-  },
-  {
-    id: 4,
-    title: "Yeni Kulüp Kayıtları Başlıyor",
-    summary: "Müzik, spor, bilim ve sanat kulüplerine kayıtlar 20 Eylül'de başlayacak. Formları doldurmayı unutmayın!",
-    date: "1 Eylül 2024"
-  },
-  {
-    id: 5,
-    title: "Mezunlar Buluşması 2024",
-    summary: "Her yıl geleneksel olarak düzenlenen mezunlar buluşması bu yıl 15 Kasım'da gerçekleşecek.",
-    date: "25 Ağustos 2024"
-  },
-  {
-    id: 6,
-    title: "Yaz Okulu Programı Tamamlandı",
-    summary: "Akademik destek ve sosyal aktivitelerle dolu yaz okulu programımız başarıyla sona erdi.",
-    date: "20 Ağustos 2024"
+    title: "CALCOM Web Açılıyor",
+    summary: "CALCOM web sitesi yayında. Topluluğumuzun tüm duyurularını ve güncellemelerini buradan takip edebilirsiniz.",
+    date: "1 Şubat 2026"
   }
 ];
 

@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="border-t border-white/10 bg-black text-white">
-      <div className="container py-12">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container py-12 text-center">
+        <div className="grid gap-8 sm:grid-cols-2 place-items-center">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
+            <p className="text-sm text-white/70 whitespace-nowrap">
+              Cağaloğlu Anadolu Lisesi öğrenci ve mezunlarını bir araya getiren topluluk.
+            </p>
+            <div className="flex items-center justify-center gap-3">
               <img
                 src="/logo.png"
                 alt="CAL Community logo"
@@ -15,51 +18,27 @@ const Footer = () => {
               />
               <span className="font-semibold text-white">CAL Community</span>
             </div>
-            <p className="text-sm text-white/70">
-              Cağaloğlu Anadolu Lisesi öğrenci ve mezunlarını bir araya getiren topluluk.
-            </p>
           </div>
 
-          {/* Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-white">Sayfalar</h3>
-            <ul className="space-y-2 text-sm text-white/70">
-              <li>
-                <Link to="/" className="transition-colors hover:text-white">Ana Sayfa</Link>
-              </li>
-              <li>
-                <Link to="/news" className="transition-colors hover:text-white">Haberler</Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Community */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-white">Topluluk</h3>
-            <ul className="space-y-2 text-sm text-white/70">
-              <li>
-                <Link to="/clubs" className="transition-colors hover:text-white">Kulüpler</Link>
-              </li>
-              <li>
-                <span className="cursor-pointer transition-colors hover:text-white">Forum</span>
-              </li>
-              <li>
-                <span className="cursor-pointer transition-colors hover:text-white">CALMED</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-white">İletişim</h3>
-            <ul className="space-y-2 text-sm text-white/70">
-              <li>Cağaloğlu, İstanbul</li>
-              <li>info@calcommunity.org</li>
-            </ul>
+            <div className="text-sm text-white/70 space-y-2">
+              <div>
+                <Link to="/contact" className="font-semibold text-white transition-colors hover:text-white">İletişim</Link>
+              </div>
+              <div>
+                <Link to="/kvkk" className="font-semibold text-white transition-colors hover:text-white">KVKK</Link>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/70">
+          <p className="mb-2">
+            Bu topluluk gayriresmidir ve CALMED veya diğer oluşumlarla bağlantılı değildir.
+          </p>
+          <p className="mb-2">
+            KVKK sebebiyle öğrencilerimizin isimleri sadece isim ve soyisminin baş harfleri ile verilmektedir.
+          </p>
           <p>© {new Date().getFullYear()} CAL Community. Tüm hakları saklıdır.</p>
         </div>
       </div>

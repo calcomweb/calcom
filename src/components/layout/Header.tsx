@@ -35,9 +35,9 @@ const Header = () => {
           <Button size="sm">Katıl</Button>
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Menu Button */}
         <button
-          className="md:hidden p-2"
+          className="p-2"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -45,39 +45,65 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Overlay Navigation */}
       {isMenuOpen && (
-        <nav className="md:hidden border-t bg-background p-4 flex flex-col gap-4">
-          <Link
-            to="/"
-            className="text-sm font-medium hover:text-primary transition-colors"
+        <div className="fixed inset-0 z-[60]">
+          <button
+            className="absolute inset-0 bg-black/50"
+            aria-label="Close menu overlay"
             onClick={() => setIsMenuOpen(false)}
-          >
-            Ana Sayfa
-          </Link>
-          <Link
-            to="/clubs"
-            className="text-sm font-medium hover:text-primary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Kulüpler
-          </Link>
-          <Link
-            to="/news"
-            className="text-sm font-medium hover:text-primary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Haberler
-          </Link>
-          <Link
-            to="/admin"
-            className="text-sm font-medium hover:text-primary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Admin
-          </Link>
-          <Button size="sm" className="w-fit">Katıl</Button>
-        </nav>
+          />
+          <nav className="absolute right-0 top-0 h-screen w-[50vw] max-w-[360px] rounded-none bg-[#8f1627] p-4 flex flex-col gap-4 shadow-lg text-white">
+            <button
+              className="text-left text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Menü Kapat
+            </button>
+            <Link
+              to="/"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Ana Sayfa
+            </Link>
+            <Link
+              to="/clubs"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Kulüpler
+            </Link>
+            <Link
+              to="/news"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Haberler
+            </Link>
+            <Link
+              to="/login"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Giriş
+            </Link>
+            <Link
+              to="/kvkk"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              KVKK
+            </Link>
+            <Link
+              to="/"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Katıl
+            </Link>
+          </nav>
+        </div>
       )}
     </header>
   );

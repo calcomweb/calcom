@@ -14,6 +14,11 @@ export default {
     },
     extend: {
       colors: {
+        office4: "#FFC000",
+        "alm-blue": "var(--alm-blue)",
+        "alm-green": "var(--alm-green)",
+        "alm-orange": "var(--alm-orange)",
+        "alm-yellow": "var(--alm-yellow)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

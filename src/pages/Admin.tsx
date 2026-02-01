@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/lib/supabase";
 import type { Club } from "@/data/clubs";
 
@@ -49,7 +48,7 @@ const Admin = () => {
       if (isSuperAdmin) {
         const { data, error: fetchError } = await supabase
           .from("clubs")
-          .select("id, slug, name, short_info, long_info, support_needed, image_url, website_url, contact_url, created_at")
+          .select("id, slug, name, short_info, long_info, support_needed, support_types, financial_support_info, financial_support_bank_name, financial_support_iban, financial_support_description, moral_support_text, image_url, website_url, contact_email, responsible_people, developments, created_at")
           .order("name");
 
         if (fetchError) {
@@ -62,9 +61,17 @@ const Admin = () => {
             shortInfo: club.short_info ?? "",
             longInfo: club.long_info ?? "",
             supportNeeded: club.support_needed ?? false,
+            supportTypes: club.support_types ?? [],
+            financialSupportInfo: club.financial_support_info ?? "",
+            financialSupportBankName: club.financial_support_bank_name ?? "",
+            financialSupportIban: club.financial_support_iban ?? "",
+            financialSupportDescription: club.financial_support_description ?? "",
+            moralSupportText: club.moral_support_text ?? "",
             imageUrl: club.image_url,
             websiteUrl: club.website_url,
-            contactUrl: club.contact_url,
+            contactEmail: club.contact_email,
+            responsiblePeople: club.responsible_people ?? [],
+            developments: club.developments ?? [],
             createdAt: club.created_at,
           }));
           setClubs(mapped);
@@ -75,7 +82,7 @@ const Admin = () => {
 
       const { data, error: fetchError } = await supabase
         .from("club_admins")
-        .select("club:clubs(id, slug, name, short_info, long_info, support_needed, image_url, website_url, contact_url, created_at)")
+        .select("club:clubs(id, slug, name, short_info, long_info, support_needed, support_types, financial_support_info, financial_support_bank_name, financial_support_iban, financial_support_description, moral_support_text, image_url, website_url, contact_email, responsible_people, developments, created_at)")
         .order("created_at", { ascending: false });
 
       if (fetchError) {
@@ -94,9 +101,17 @@ const Admin = () => {
           shortInfo: club.short_info ?? "",
           longInfo: club.long_info ?? "",
           supportNeeded: club.support_needed ?? false,
+          supportTypes: club.support_types ?? [],
+          financialSupportInfo: club.financial_support_info ?? "",
+          financialSupportBankName: club.financial_support_bank_name ?? "",
+          financialSupportIban: club.financial_support_iban ?? "",
+          financialSupportDescription: club.financial_support_description ?? "",
+          moralSupportText: club.moral_support_text ?? "",
           imageUrl: club.image_url,
           websiteUrl: club.website_url,
-          contactUrl: club.contact_url,
+          contactEmail: club.contact_email,
+          responsiblePeople: club.responsible_people ?? [],
+          developments: club.developments ?? [],
           createdAt: club.created_at,
         }));
       setClubs(mapped);
@@ -139,9 +154,17 @@ const Admin = () => {
         short_info: selectedClub.shortInfo,
         long_info: selectedClub.longInfo,
         support_needed: selectedClub.supportNeeded,
+        support_types: selectedClub.supportTypes,
+        financial_support_info: selectedClub.financialSupportInfo,
+        financial_support_bank_name: selectedClub.financialSupportBankName,
+        financial_support_iban: selectedClub.financialSupportIban,
+        financial_support_description: selectedClub.financialSupportDescription,
+        moral_support_text: selectedClub.moralSupportText,
         image_url: selectedClub.imageUrl,
         website_url: selectedClub.websiteUrl,
-        contact_url: selectedClub.contactUrl,
+        contact_email: selectedClub.contactEmail,
+        responsible_people: selectedClub.responsiblePeople,
+        developments: selectedClub.developments,
       })
       .eq("id", selectedClub.id);
 
@@ -307,9 +330,22 @@ const Admin = () => {
                         placeholder="Website URL"
                       />
                       <Input
-                        value={selectedClub.contactUrl ?? ""}
-                        onChange={(event) => updateSelectedClub({ contactUrl: event.target.value || null })}
-                        placeholder="İletişim URL (e-posta veya sosyal)"
+                        value={selectedClub.contactEmail ?? ""}
+                        onChange={(event) => updateSelectedClub({ contactEmail: event.target.value || null })}
+                        placeholder="İletişim e-postası"
+                        type="email"
+                      />
+                      <Input
+                        value={selectedClub.responsiblePeople.join(", ")}
+                        onChange={(event) =>
+                          updateSelectedClub({
+                            responsiblePeople: event.target.value
+                              .split(",")
+                              .map((item) => item.trim())
+                              .filter(Boolean),
+                          })
+                        }
+                        placeholder="Sorumlu kişiler (virgülle ayır)"
                       />
                       <Textarea
                         value={selectedClub.shortInfo}
@@ -323,14 +359,110 @@ const Admin = () => {
                         placeholder="Uzun bilgi"
                         rows={6}
                       />
-                      <div className="flex items-center justify-between rounded-lg border px-3 py-2">
+                      <Textarea
+                        value={selectedClub.developments.join("\n")}
+                        onChange={(event) =>
+                          updateSelectedClub({
+                            developments: event.target.value
+                              .split("\n")
+                              .map((item) => item.trim())
+                              .filter(Boolean),
+                          })
+                        }
+                        placeholder="Gelişmeler (her satır ayrı madde, 01.02.26 formatında tarih ile başlat)"
+                        rows={5}
+                      />
+                      <div className="flex items-center justify-between gap-4 rounded-lg border px-3 py-2">
                         <div>
-                          <div className="font-medium">Destek ihtiyacı</div>
-                          <div className="text-sm text-muted-foreground">Kulübün desteğe ihtiyacı var mı?</div>
+                          <div className="font-medium">Kulübün Desteğe İhtiyacı var mı?</div>
+                          <div className="text-sm text-muted-foreground">Var / Yok seçimini yap.</div>
                         </div>
-                        <Switch
-                          checked={selectedClub.supportNeeded}
-                          onCheckedChange={(value) => updateSelectedClub({ supportNeeded: value })}
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => updateSelectedClub({ supportNeeded: true })}
+                            className={`h-8 rounded-md border px-3 text-sm font-medium transition-colors ${
+                              selectedClub.supportNeeded
+                                ? "border-emerald-500 bg-emerald-500 text-white"
+                                : "border-white/10 bg-muted/40 text-muted-foreground hover:bg-muted/60"
+                            }`}
+                          >
+                            Var
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateSelectedClub({ supportNeeded: false })}
+                            className={`h-8 rounded-md border px-3 text-sm font-medium transition-colors ${
+                              !selectedClub.supportNeeded
+                                ? "border-rose-500 bg-rose-500 text-white"
+                                : "border-white/10 bg-muted/40 text-muted-foreground hover:bg-muted/60"
+                            }`}
+                          >
+                            Yok
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 rounded-lg border px-3 py-2">
+                        <div>
+                          <div className="font-medium">Gerekli Destek</div>
+                          <div className="text-sm text-muted-foreground">Maddi / Manevi seçimini yap.</div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {(["Maddi", "Manevi"] as const).map((type) => {
+                            const active = selectedClub.supportTypes.includes(type);
+                            return (
+                              <button
+                                key={type}
+                                type="button"
+                                onClick={() =>
+                                  updateSelectedClub({
+                                    supportTypes: active
+                                      ? selectedClub.supportTypes.filter((item) => item !== type)
+                                      : [...selectedClub.supportTypes, type],
+                                  })
+                                }
+                                className={`h-8 rounded-md border px-3 text-sm font-medium transition-colors ${
+                                  active
+                                    ? "border-emerald-500 bg-emerald-500 text-white"
+                                    : "border-white/10 bg-muted/40 text-muted-foreground hover:bg-muted/60"
+                                }`}
+                              >
+                                {type}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium">Maddi destek açıklaması</div>
+                        <Input
+                          value={selectedClub.financialSupportInfo}
+                          onChange={(event) => updateSelectedClub({ financialSupportInfo: event.target.value })}
+                          placeholder="Hesap Bilgileri"
+                        />
+                        <Input
+                          value={selectedClub.financialSupportIban}
+                          onChange={(event) => updateSelectedClub({ financialSupportIban: event.target.value })}
+                          placeholder="IBAN numarası"
+                        />
+                        <Input
+                          value={selectedClub.financialSupportBankName}
+                          onChange={(event) => updateSelectedClub({ financialSupportBankName: event.target.value })}
+                          placeholder="Banka İsmi"
+                        />
+                        <Input
+                          value={selectedClub.financialSupportDescription}
+                          onChange={(event) => updateSelectedClub({ financialSupportDescription: event.target.value })}
+                          placeholder="Açıklama"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium">Manevi destek açıklaması</div>
+                        <Textarea
+                          value={selectedClub.moralSupportText}
+                          onChange={(event) => updateSelectedClub({ moralSupportText: event.target.value })}
+                          placeholder="Buraya kullanıcı madde madde yazacak veya paragraf yazacak"
+                          rows={4}
                         />
                       </div>
                       <Button onClick={handleUpdateClub} disabled={isSaving}>
