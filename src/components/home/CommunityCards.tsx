@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Newspaper, Users, Heart, Gamepad2, Languages, Link2, MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const communityItems = [
   /*
@@ -14,7 +15,7 @@ const communityItems = [
     icon: Users,
     title: "Kulüpler",
     description: "Öğrenci kulüplerini keşfet, üyelik başvurusu yap ve etkinliklere katıl.",
-    href: "#"
+    href: "/clubs"
   },
   /*
   {
@@ -65,22 +66,23 @@ const CommunityCards = () => {
 
         <div className="flex justify-center">
           {communityItems.map((item) => (
-            <Card 
-              key={item.title} 
-              className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 w-[350px]"
-            >
-              <CardHeader>
-                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                  <item.icon size={24} />
-                </div>
-                <CardTitle className="text-lg">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-sm leading-relaxed">
-                  {item.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+            <Link key={item.title} to={item.href} className="w-[350px]">
+              <Card
+                className="group h-full cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1"
+              >
+                <CardHeader>
+                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                    <item.icon size={24} />
+                  </div>
+                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm leading-relaxed">
+                    {item.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>

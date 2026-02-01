@@ -23,6 +23,9 @@ const Header = () => {
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
             Ana Sayfa
           </Link>
+          <Link to="/clubs" className="text-sm font-medium hover:text-primary transition-colors">
+            Kulüpler
+          </Link>
           <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
             Haberler
           </Link>
@@ -48,6 +51,13 @@ const Header = () => {
             onClick={() => setIsMenuOpen(false)}
           >
             Ana Sayfa
+          </Link>
+          <Link
+            to="/clubs"
+            className="text-sm font-medium hover:text-primary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Kulüpler
           </Link>
           <Link
             to="/news"
