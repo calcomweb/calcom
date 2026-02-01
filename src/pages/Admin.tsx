@@ -20,6 +20,9 @@ const Admin = () => {
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
 
   const isSuperAdmin = useMemo(() => sessionEmail === SUPERADMIN_EMAIL, [sessionEmail]);
 
@@ -147,6 +150,35 @@ const Admin = () => {
     }
 
     setIsSaving(false);
+  };
+
+  const handlePasswordChange = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!supabase) return;
+    setPasswordMessage(null);
+    setError(null);
+
+    if (newPassword.length < 6) {
+      setError("Şifre en az 6 karakter olmalı.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError("Şifreler eşleşmiyor.");
+      return;
+    }
+
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (updateError) {
+      setError("Şifre güncellenemedi.");
+      return;
+    }
+
+    setNewPassword("");
+    setConfirmPassword("");
+    setPasswordMessage("Şifre güncellendi.");
   };
 
   const updateSelectedClub = (patch: Partial<Club>) => {
@@ -306,6 +338,37 @@ const Admin = () => {
                       </Button>
                     </div>
                   )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Şifre Değiştir</CardTitle>
+                  <CardDescription>Hesap şifreni güncelle.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {passwordMessage && (
+                    <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                      {passwordMessage}
+                    </div>
+                  )}
+                  <form className="space-y-3" onSubmit={handlePasswordChange}>
+                    <Input
+                      type="password"
+                      placeholder="Yeni şifre"
+                      value={newPassword}
+                      onChange={(event) => setNewPassword(event.target.value)}
+                      required
+                    />
+                    <Input
+                      type="password"
+                      placeholder="Yeni şifre tekrar"
+                      value={confirmPassword}
+                      onChange={(event) => setConfirmPassword(event.target.value)}
+                      required
+                    />
+                    <Button type="submit">Şifreyi güncelle</Button>
+                  </form>
                 </CardContent>
               </Card>
             </div>
