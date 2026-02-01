@@ -2,18 +2,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Newspaper, Users, Heart, Gamepad2, Languages, Link2, MessageSquare } from "lucide-react";
 
 const communityItems = [
+  /*
   {
     icon: Newspaper,
     title: "Haberler & Duyurular",
     description: "Okul ve topluluk haberleri, etkinlik duyuruları ve önemli gelişmeler.",
     href: "/news"
   },
+  */
   {
     icon: Users,
-    title: "Kulüpler & Üyelik",
+    title: "Kulüpler",
     description: "Öğrenci kulüplerini keşfet, üyelik başvurusu yap ve etkinliklere katıl.",
     href: "#"
   },
+  /*
   {
     icon: Heart,
     title: "CALMED Destek",
@@ -44,6 +47,7 @@ const communityItems = [
     description: "Öğrenci ve mezunların buluştuğu tartışma platformu.",
     href: "#"
   }
+  */
 ];
 
 const CommunityCards = () => {
@@ -59,11 +63,11 @@ const CommunityCards = () => {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="flex justify-center">
           {communityItems.map((item) => (
             <Card 
               key={item.title} 
-              className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1"
+              className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 w-[350px]"
             >
               <CardHeader>
                 <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">

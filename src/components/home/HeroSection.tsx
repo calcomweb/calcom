@@ -10,7 +10,7 @@ const HeroSection = () => {
             <img
               src="/logo.png"
               alt="CAL Community logo"
-              className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 object-contain drop-shadow"
+              className="h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 object-contain rounded-full drop-shadow transition-transform duration-300 ease-in-out hover:scale-105 hover:drop-shadow-xl"
             />
           </div>
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
