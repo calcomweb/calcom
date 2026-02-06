@@ -26,10 +26,13 @@
 
 - **Kullanıcı:** ubterzioglu
 - **CLI Versiyon:** 50.5.0
+- **URL:** https://calcom-rosy-two.vercel.app
+- **Durum:** Production Deploy edildi. Env değişkenleri eklendi.
+- **Git:** GitHub repo (calcomweb/calcom) bağlı.
 
 ## Yapılacaklar
 
-- [ ] Kalan 11 Supabase migration'ı push edilecek
+- [x] Kalan 11 Supabase migration'ı push edilecek (Remote ile senkronize - `xllosidsyodtvghslymq`)
 - [ ] Boş Supabase projesi (jqpsdjqwzkwicjebbnzx) silinecek
-- [ ] Vercel'de yeni proje oluşturulacak
-- [ ] GitHub repo'su Vercel'e bağlanacak
+- [x] Vercel'de yeni proje oluşturulacak
+- [x] GitHub repo'su Vercel'e bağlanacak
