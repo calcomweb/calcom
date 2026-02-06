@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/lib/supabase";
 import type { Club } from "@/data/clubs";
+import type { StudentEvent } from "@/data/events";
 
 const SUPERADMIN_EMAIL = "ubterzioglu@gmail.com";
 
@@ -17,7 +18,11 @@ const Admin = () => {
   const [sessionEmail, setSessionEmail] = useState<string | null>(null);
   const [clubs, setClubs] = useState<Club[]>([]);
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [events, setEvents] = useState<StudentEvent[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<StudentEvent | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isEventSaving, setIsEventSaving] = useState(false);
+  const [isEventsLoading, setIsEventsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -121,6 +126,50 @@ const Admin = () => {
     loadClubs();
   }, [sessionEmail, isSuperAdmin]);
 
+  useEffect(() => {
+    if (!supabase || !sessionEmail || !isSuperAdmin) return;
+
+    const loadEvents = async () => {
+      setIsEventsLoading(true);
+      const { data, error: fetchError } = await supabase
+        .from("student_events")
+        .select("id, slug, name, short_info, long_info, support_needed, support_types, financial_support_info, financial_support_bank_name, financial_support_iban, financial_support_description, moral_support_text, image_url, website_url, contact_email, responsible_people, developments, created_at")
+        .order("name");
+
+      if (fetchError) {
+        setError("Etkinlikler yüklenemedi.");
+        setIsEventsLoading(false);
+        return;
+      }
+
+      const mapped = (data ?? []).map((event) => ({
+        id: event.id,
+        slug: event.slug,
+        name: event.name,
+        shortInfo: event.short_info ?? "",
+        longInfo: event.long_info ?? "",
+        supportNeeded: event.support_needed ?? false,
+        supportTypes: event.support_types ?? [],
+        financialSupportInfo: event.financial_support_info ?? "",
+        financialSupportBankName: event.financial_support_bank_name ?? "",
+        financialSupportIban: event.financial_support_iban ?? "",
+        financialSupportDescription: event.financial_support_description ?? "",
+        moralSupportText: event.moral_support_text ?? "",
+        imageUrl: event.image_url,
+        websiteUrl: event.website_url,
+        contactEmail: event.contact_email,
+        responsiblePeople: event.responsible_people ?? [],
+        developments: event.developments ?? [],
+        createdAt: event.created_at,
+      }));
+
+      setEvents(mapped);
+      setIsEventsLoading(false);
+    };
+
+    loadEvents();
+  }, [sessionEmail, isSuperAdmin]);
+
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!supabase) return;
@@ -175,6 +224,39 @@ const Admin = () => {
     setIsSaving(false);
   };
 
+  const handleUpdateEvent = async () => {
+    if (!supabase || !selectedEvent) return;
+    setIsEventSaving(true);
+    setError(null);
+
+    const { error: updateError } = await supabase
+      .from("student_events")
+      .update({
+        name: selectedEvent.name,
+        short_info: selectedEvent.shortInfo,
+        long_info: selectedEvent.longInfo,
+        support_needed: selectedEvent.supportNeeded,
+        support_types: selectedEvent.supportTypes,
+        financial_support_info: selectedEvent.financialSupportInfo,
+        financial_support_bank_name: selectedEvent.financialSupportBankName,
+        financial_support_iban: selectedEvent.financialSupportIban,
+        financial_support_description: selectedEvent.financialSupportDescription,
+        moral_support_text: selectedEvent.moralSupportText,
+        image_url: selectedEvent.imageUrl,
+        website_url: selectedEvent.websiteUrl,
+        contact_email: selectedEvent.contactEmail,
+        responsible_people: selectedEvent.responsiblePeople,
+        developments: selectedEvent.developments,
+      })
+      .eq("id", selectedEvent.id);
+
+    if (updateError) {
+      setError("Etkinlik güncellenemedi.");
+    }
+
+    setIsEventSaving(false);
+  };
+
   const handlePasswordChange = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!supabase) return;
@@ -206,6 +288,10 @@ const Admin = () => {
 
   const updateSelectedClub = (patch: Partial<Club>) => {
     setSelectedClub((prev) => (prev ? { ...prev, ...patch } : prev));
+  };
+
+  const updateSelectedEvent = (patch: Partial<StudentEvent>) => {
+    setSelectedEvent((prev) => (prev ? { ...prev, ...patch } : prev));
   };
 
   return (
@@ -467,6 +553,220 @@ const Admin = () => {
                       </div>
                       <Button onClick={handleUpdateClub} disabled={isSaving}>
                         {isSaving ? "Kaydediliyor..." : "Kaydet"}
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Öğrenci Etkinlikleri</CardTitle>
+                  <CardDescription>
+                    {isSuperAdmin ? "Tüm etkinlikler" : "Etkinlik yönetimi sadece superadmin için açıktır."}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {!isSuperAdmin && (
+                    <div className="text-sm text-muted-foreground">
+                      Bu bölüme erişim yetkiniz yok.
+                    </div>
+                  )}
+                  {isSuperAdmin && isEventsLoading && (
+                    <div className="text-sm text-muted-foreground">Yükleniyor...</div>
+                  )}
+                  {isSuperAdmin && !isEventsLoading && events.length === 0 && (
+                    <div className="text-sm text-muted-foreground">Henüz etkinlik bulunamadı.</div>
+                  )}
+                  {isSuperAdmin && (
+                    <div className="space-y-3">
+                      {events.map((event) => (
+                        <button
+                          key={event.id}
+                          type="button"
+                          onClick={() => setSelectedEvent(event)}
+                          className={`w-full rounded-lg border px-4 py-3 text-left transition ${
+                            selectedEvent?.id === event.id
+                              ? "border-primary bg-primary/5"
+                              : "hover:border-primary/40"
+                          }`}
+                        >
+                          <div className="font-medium">{event.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {event.shortInfo || "Kısa bilgi yok"}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Etkinlik Düzenle</CardTitle>
+                  <CardDescription>Seçili etkinliğin bilgilerini güncelle.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {!selectedEvent && (
+                    <div className="text-sm text-muted-foreground">Soldan bir etkinlik seç.</div>
+                  )}
+
+                  {selectedEvent && (
+                    <div className="space-y-4">
+                      <Input
+                        value={selectedEvent.name}
+                        onChange={(event) => updateSelectedEvent({ name: event.target.value })}
+                        placeholder="Etkinlik adı"
+                      />
+                      <Input
+                        value={selectedEvent.imageUrl ?? ""}
+                        onChange={(event) => updateSelectedEvent({ imageUrl: event.target.value || null })}
+                        placeholder="Görsel URL"
+                      />
+                      <Input
+                        value={selectedEvent.websiteUrl ?? ""}
+                        onChange={(event) => updateSelectedEvent({ websiteUrl: event.target.value || null })}
+                        placeholder="Website URL"
+                      />
+                      <Input
+                        value={selectedEvent.contactEmail ?? ""}
+                        onChange={(event) => updateSelectedEvent({ contactEmail: event.target.value || null })}
+                        placeholder="İletişim e-postası"
+                        type="email"
+                      />
+                      <Input
+                        value={selectedEvent.responsiblePeople.join(", ")}
+                        onChange={(event) =>
+                          updateSelectedEvent({
+                            responsiblePeople: event.target.value
+                              .split(",")
+                              .map((item) => item.trim())
+                              .filter(Boolean),
+                          })
+                        }
+                        placeholder="Sorumlu kişiler (virgülle ayır)"
+                      />
+                      <Textarea
+                        value={selectedEvent.shortInfo}
+                        onChange={(event) => updateSelectedEvent({ shortInfo: event.target.value })}
+                        placeholder="Kısa bilgi"
+                        rows={3}
+                      />
+                      <Textarea
+                        value={selectedEvent.longInfo}
+                        onChange={(event) => updateSelectedEvent({ longInfo: event.target.value })}
+                        placeholder="Uzun bilgi"
+                        rows={6}
+                      />
+                      <Textarea
+                        value={selectedEvent.developments.join("\n")}
+                        onChange={(event) =>
+                          updateSelectedEvent({
+                            developments: event.target.value
+                              .split("\n")
+                              .map((item) => item.trim())
+                              .filter(Boolean),
+                          })
+                        }
+                        placeholder="Gelişmeler (her satır ayrı madde, 01.02.26 formatında tarih ile başlat)"
+                        rows={5}
+                      />
+                      <div className="flex items-center justify-between gap-4 rounded-lg border px-3 py-2">
+                        <div>
+                          <div className="font-medium">Etkinliğin Desteğe İhtiyacı var mı?</div>
+                          <div className="text-sm text-muted-foreground">Var / Yok seçimini yap.</div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => updateSelectedEvent({ supportNeeded: true })}
+                            className={`h-8 rounded-md border px-3 text-sm font-medium transition-colors ${
+                              selectedEvent.supportNeeded
+                                ? "border-emerald-500 bg-emerald-500 text-white"
+                                : "border-white/10 bg-muted/40 text-muted-foreground hover:bg-muted/60"
+                            }`}
+                          >
+                            Var
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateSelectedEvent({ supportNeeded: false })}
+                            className={`h-8 rounded-md border px-3 text-sm font-medium transition-colors ${
+                              !selectedEvent.supportNeeded
+                                ? "border-rose-500 bg-rose-500 text-white"
+                                : "border-white/10 bg-muted/40 text-muted-foreground hover:bg-muted/60"
+                            }`}
+                          >
+                            Yok
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 rounded-lg border px-3 py-2">
+                        <div>
+                          <div className="font-medium">Gerekli Destek</div>
+                          <div className="text-sm text-muted-foreground">Maddi / Manevi seçimini yap.</div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {(["Maddi", "Manevi"] as const).map((type) => {
+                            const active = selectedEvent.supportTypes.includes(type);
+                            return (
+                              <button
+                                key={type}
+                                type="button"
+                                onClick={() =>
+                                  updateSelectedEvent({
+                                    supportTypes: active
+                                      ? selectedEvent.supportTypes.filter((item) => item !== type)
+                                      : [...selectedEvent.supportTypes, type],
+                                  })
+                                }
+                                className={`h-8 rounded-md border px-3 text-sm font-medium transition-colors ${
+                                  active
+                                    ? "border-emerald-500 bg-emerald-500 text-white"
+                                    : "border-white/10 bg-muted/40 text-muted-foreground hover:bg-muted/60"
+                                }`}
+                              >
+                                {type}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium">Maddi destek açıklaması</div>
+                        <Input
+                          value={selectedEvent.financialSupportInfo}
+                          onChange={(event) => updateSelectedEvent({ financialSupportInfo: event.target.value })}
+                          placeholder="Hesap Bilgileri"
+                        />
+                        <Input
+                          value={selectedEvent.financialSupportIban}
+                          onChange={(event) => updateSelectedEvent({ financialSupportIban: event.target.value })}
+                          placeholder="IBAN numarası"
+                        />
+                        <Input
+                          value={selectedEvent.financialSupportBankName}
+                          onChange={(event) => updateSelectedEvent({ financialSupportBankName: event.target.value })}
+                          placeholder="Banka İsmi"
+                        />
+                        <Input
+                          value={selectedEvent.financialSupportDescription}
+                          onChange={(event) => updateSelectedEvent({ financialSupportDescription: event.target.value })}
+                          placeholder="Açıklama"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium">Manevi destek açıklaması</div>
+                        <Textarea
+                          value={selectedEvent.moralSupportText}
+                          onChange={(event) => updateSelectedEvent({ moralSupportText: event.target.value })}
+                          placeholder="Buraya kullanıcı madde madde yazacak veya paragraf yazacak"
+                          rows={4}
+                        />
+                      </div>
+                      <Button onClick={handleUpdateEvent} disabled={isEventSaving}>
+                        {isEventSaving ? "Kaydediliyor..." : "Kaydet"}
                       </Button>
                     </div>
                   )}

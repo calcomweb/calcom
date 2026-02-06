@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import News from "./pages/News";
 import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
+import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
 import Alumni from "./pages/Alumni";
 import AlumniCreate from "./pages/AlumniCreate";
 import AlumniDetail from "./pages/AlumniDetail";
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/news" element={<News />} />
           <Route path="/clubs" element={<Clubs />} />
           <Route path="/clubs/:slug" element={<ClubDetail />} />
+          <Route path="/etkinlikler" element={<Events />} />
+          <Route path="/etkinlikler/:slug" element={<EventDetail />} />
           <Route path="/students" element={<Students />} />
           <Route path="/alumni" element={<Alumni />} />
           <Route path="/alumni/yeni" element={<AlumniCreate />} />

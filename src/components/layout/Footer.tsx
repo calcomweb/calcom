@@ -60,13 +60,10 @@ const Footer = () => {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-white/70 space-y-2 leading-relaxed">
-          <p className="text-white/70">
-            Cağaloğlu Anadolu Lisesi öğrenci ve mezunlarını bir araya getiren topluluk.
-          </p>
           <p>
             Bu topluluk gayriresmidir ve CALMED veya diğer oluşumlarla bağlantılı değildir.
           </p>
-          <p>KVKK sebebiyle öğrencilerimizin isimleri sadece isim ve soyisminin baş harfleri ile verilmektedir.</p>
+          <p>KVKK ve öğrencilerimizi korumak amacıyla öğrencilerimizin isimleri sadece isim ve soyisminin baş harfleri ile verilmektedir.</p>
           <p>© {new Date().getFullYear()} CAL Community. Tüm hakları saklıdır.</p>
         </div>
       </div>

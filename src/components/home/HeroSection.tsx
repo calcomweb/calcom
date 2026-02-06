@@ -16,19 +16,22 @@ const HeroSection = () => {
               className="h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 object-contain rounded-full drop-shadow transition-transform duration-300 ease-in-out hover:scale-105 hover:drop-shadow-xl"
             />
           </div>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-white">
             <Users size={16} />
             <span>Öğrenciler & Mezunlar Bir Arada</span>
           </div>
 
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            CAL Ailesinin Bir Parçası
-            <span className="text-primary"> Olmanın Gururunu Yaşa</span>
+            <span className="block">
+              <span className="text-[#8f1627]">CAL</span> Community Web'e
+            </span>
+            <span className="block">
+              Hoş Geldin <span className="text-[#8f1627]">CAL</span>'lı!
+            </span>
           </h1>
 
           <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
-            Cağaloğlu Anadolu Lisesi'nin öğrenci ve mezunlarını bir araya getiren dijital topluluk platformu. 
-            Geçmişten geleceğe uzanan bağımızı güçlendirelim.
+            Cağaloğlu Anadolu Lisesi'nin öğrenci ve mezunlarını bir araya getiren dijital topluluk platformu.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

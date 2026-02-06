@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Mail, ArrowLeft, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchClubBySlug } from "@/data/clubs";
+import { fetchEventBySlug } from "@/data/events";
 import { Link, useParams } from "react-router-dom";
 
-const ClubDetail = () => {
+const EventDetail = () => {
   const { slug } = useParams();
   const getInitials = (fullName: string) =>
     fullName
@@ -17,8 +17,8 @@ const ClubDetail = () => {
       .join("");
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["club", slug],
-    queryFn: () => fetchClubBySlug(slug ?? ""),
+    queryKey: ["event", slug],
+    queryFn: () => fetchEventBySlug(slug ?? ""),
     enabled: Boolean(slug),
   });
 
@@ -29,18 +29,18 @@ const ClubDetail = () => {
         <section className="py-16">
           <div className="container">
             <Button asChild variant="ghost" className="mb-6">
-              <Link to="/clubs">
+              <Link to="/etkinlikler">
                 <ArrowLeft />
-                Öğrenci kulüplerine dön
+                Öğrenci etkinliklerine dön
               </Link>
             </Button>
 
             {isLoading && (
-              <div className="text-center text-muted-foreground">Kulüp bilgisi yükleniyor...</div>
+              <div className="text-center text-muted-foreground">Etkinlik bilgisi yükleniyor...</div>
             )}
 
             {isError && (
-              <div className="text-center text-destructive">Kulüp bilgisi alınamadı.</div>
+              <div className="text-center text-destructive">Etkinlik bilgisi alınamadı.</div>
             )}
 
             {!isLoading && !isError && data && (
@@ -48,7 +48,10 @@ const ClubDetail = () => {
                 <div className="space-y-6">
                   <div className="aspect-[16/9] w-full overflow-hidden rounded-lg bg-muted">
                     <img
-                      src={data.imageUrl ?? "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop"}
+                      src={
+                        data.imageUrl ??
+                        "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1600&auto=format&fit=crop"
+                      }
                       alt={`${data.name} görseli`}
                       className="h-full w-full object-cover"
                     />
@@ -58,7 +61,7 @@ const ClubDetail = () => {
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{data.name}</h1>
                     <p className="text-lg text-muted-foreground">{data.shortInfo}</p>
                     <div className="flex flex-wrap items-center gap-3">
-                      <span className="text-sm text-muted-foreground">Kulübün Desteğe İhtiyacı var mı?</span>
+                      <span className="text-sm text-muted-foreground">Etkinliğin Desteğe İhtiyacı var mı?</span>
                       <div className="flex items-center gap-2">
                         <span
                           className={`rounded-md border px-2 py-1 text-xs font-medium ${
@@ -196,4 +199,4 @@ const ClubDetail = () => {
   );
 };
 
-export default ClubDetail;
+export default EventDetail;

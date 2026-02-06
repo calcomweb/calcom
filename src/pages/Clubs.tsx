@@ -23,17 +23,17 @@ const Clubs = () => {
         <section className="py-20">
           <div className="container">
             <div className="mx-auto max-w-2xl text-center mb-12">
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Kulüpler</h1>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Öğrenci Kulüpleri</h1>
               <p className="text-muted-foreground text-lg">
-                Kulüp profilleri yakında veritabanından otomatik olarak listelenecek.
+                Öğrenci kulübü profilleri yakında veritabanından otomatik olarak listelenecek.
               </p>
             </div>
 
             {isLoading && (
-              <div className="text-center text-muted-foreground">Kulüpler yükleniyor...</div>
+              <div className="text-center text-muted-foreground">Öğrenci kulüpleri yükleniyor...</div>
             )}
             {isError && (
-              <div className="text-center text-destructive">Kulüpler yüklenemedi.</div>
+              <div className="text-center text-destructive">Öğrenci kulüpleri yüklenemedi.</div>
             )}
 
             {!isLoading && !isError && (

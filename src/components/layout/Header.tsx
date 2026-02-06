@@ -24,7 +24,10 @@ const Header = () => {
             Ana Sayfa
           </Link>
           <Link to="/clubs" className="text-sm font-medium hover:text-primary transition-colors">
-            Kulüpler
+            Öğrenci Kulüpleri
+          </Link>
+          <Link to="/etkinlikler" className="text-sm font-medium hover:text-primary transition-colors">
+            Öğrenci Etkinlikleri
           </Link>
           <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
             Haberler
@@ -72,7 +75,14 @@ const Header = () => {
               className="text-sm font-medium hover:text-white/80 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              Kulüpler
+              Öğrenci Kulüpleri
+            </Link>
+            <Link
+              to="/etkinlikler"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Öğrenci Etkinlikleri
             </Link>
             <Link
               to="/news"

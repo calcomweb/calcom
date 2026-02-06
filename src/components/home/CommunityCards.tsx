@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Newspaper, Users, GraduationCap, Briefcase, Heart, Gamepad2, Languages, Link2, MessageSquare } from "lucide-react";
+import { CalendarDays, Newspaper, Users, GraduationCap, Briefcase, Heart, Gamepad2, Languages, Link2, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const communityItems = [
@@ -13,10 +13,17 @@ const communityItems = [
   */
   {
     icon: Users,
-    title: "Kulüpler",
+    title: "Öğrenci Kulüpleri",
     description: "Öğrenci kulüplerini keşfet, üyelik başvurusu yap ve etkinliklere katıl.",
     href: "/clubs",
     iconClass: "bg-alm-blue/15 text-alm-blue group-hover:bg-alm-blue"
+  },
+  {
+    icon: CalendarDays,
+    title: "Öğrenci Etkinlikleri",
+    description: "Öğrenci etkinliklerini keşfet ve duyuruları takip et.",
+    href: "/etkinlikler",
+    iconClass: "bg-office1/15 text-office1 group-hover:bg-office1"
   },
   {
     icon: Newspaper,
@@ -88,9 +95,6 @@ const CommunityCards = () => {
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
             Topluluk Alanları
           </h2>
-          <p className="text-muted-foreground text-sm text-right whitespace-nowrap truncate">
-            CAL ailesinin tüm üyelerini bir araya getiren alanları keşfet.
-          </p>
         </div>
 
         <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
