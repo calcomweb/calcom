@@ -29,11 +29,7 @@ const Footer = () => {
           <p>
             Bu topluluk gayriresmidir ve CALMED veya diğer oluşumlarla bağlantılı değildir.
           </p>
-          <p>
-            KVKK sebebiyle öğrencilerimizin isimleri
-            <br />
-            sadece isim ve soyisminin baş harfleri ile verilmektedir.
-          </p>
+          <p>KVKK sebebiyle öğrencilerimizin isimleri sadece isim ve soyisminin baş harfleri ile verilmektedir.</p>
           <p>© {new Date().getFullYear()} CAL Community. Tüm hakları saklıdır.</p>
         </div>
       </div>

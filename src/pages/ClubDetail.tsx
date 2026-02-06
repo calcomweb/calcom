@@ -128,23 +128,6 @@ const ClubDetail = () => {
                     </p>
                   </div>
 
-                  <div className="space-y-2">
-                    <h2 className="text-xl font-semibold">Gelişmeler</h2>
-                    {data.developments.length > 0 ? (
-                      <ul className="space-y-2 text-muted-foreground">
-                        {data.developments.map((item, index) => (
-                          <li key={`${item}-${index}`} className="whitespace-pre-line">
-                            • {item}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-muted-foreground">Henüz gelişme eklenmedi.</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-6 rounded-lg border p-6">
                   <div className="space-y-3">
                     <h3 className="text-lg font-semibold">İletişim</h3>
                     <div className="flex flex-col gap-3">
@@ -183,6 +166,23 @@ const ClubDetail = () => {
                       </div>
                     ) : (
                       <p className="text-sm text-muted-foreground">Henüz sorumlu kişi eklenmedi.</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-6 rounded-lg border p-6">
+                  <div className="space-y-2">
+                    <h2 className="text-xl font-semibold">Gelişmeler</h2>
+                    {data.developments.length > 0 ? (
+                      <ul className="space-y-2 text-muted-foreground">
+                        {data.developments.map((item, index) => (
+                          <li key={`${item}-${index}`} className="whitespace-pre-line">
+                            • {item}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-muted-foreground">Henüz gelişme eklenmedi.</p>
                     )}
                   </div>
                 </div>
