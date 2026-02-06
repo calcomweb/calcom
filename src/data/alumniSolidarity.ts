@@ -72,7 +72,7 @@ export const fetchSolidarityTopics = async (): Promise<SolidarityTopic[]> => {
   }
 
   const { data, error } = await supabase
-    .from("alumni_solidarity_topics")
+    .from("public_alumni_solidarity_topics")
     .select("id, title, description, created_at")
     .order("created_at", { ascending: false });
 
@@ -94,7 +94,7 @@ export const fetchSolidarityComments = async (): Promise<SolidarityComment[]> =>
   }
 
   const { data, error } = await supabase
-    .from("alumni_solidarity_comments")
+    .from("public_alumni_solidarity_comments")
     .select("id, topic_id, body, created_at")
     .order("created_at", { ascending: true });
 

@@ -89,11 +89,39 @@ const Header = () => {
               Giriş
             </Link>
             <Link
+              to="/gizlilik-politikasi"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Gizlilik Politikası
+            </Link>
+            <Link
               to="/kvkk"
               className="text-sm font-medium hover:text-white/80 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              KVKK
+              KVKK Aydınlatma Metni
+            </Link>
+            <Link
+              to="/cerez-politikasi"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Çerez Politikası
+            </Link>
+            <Link
+              to="/kullanim-sartlari"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Kullanım Şartları ve Sorumluluk Reddi
+            </Link>
+            <Link
+              to="/acik-riza"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Açık Rıza Metni
             </Link>
             <Link
               to="/"

@@ -1,9 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, ExternalLink, Phone } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAlumni } from "@/data/alumni";
 import { Link } from "react-router-dom";
@@ -33,6 +31,9 @@ const Alumni = () => {
               <p className="text-muted-foreground text-lg">
                 Mezun profilleri ve destek olabilecekleri alanlar.
               </p>
+              <Button asChild className="mt-6">
+                <Link to="/alumni/yeni">Mezun Profili Oluştur</Link>
+              </Button>
             </div>
 
             {isLoading && (
@@ -59,6 +60,9 @@ const Alumni = () => {
                       <p className="text-sm text-muted-foreground">
                         Mezuniyet Yılı {profile.graduationYear}
                       </p>
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={`/alumni/${profile.id}`}>Profili Gör</Link>
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}

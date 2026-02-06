@@ -44,7 +44,7 @@ export const fetchStudents = async (): Promise<StudentProfile[]> => {
   }
 
   const { data, error } = await supabase
-    .from("student_profiles")
+    .from("public_student_profiles")
     .select("id, full_name, graduation_year, graduation_term, is_anonymous, created_at")
     .order("graduation_year", { ascending: false });
 

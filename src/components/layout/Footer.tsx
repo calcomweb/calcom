@@ -12,12 +12,49 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="text-white/70 space-y-1">
-            <div>
-              <Link to="/contact" className="font-semibold text-white transition-colors hover:text-white">İletişim</Link>
-            </div>
-            <div>
-              <Link to="/kvkk" className="font-semibold text-white transition-colors hover:text-white">KVKK</Link>
+          <div className="text-white/70">
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              <Link
+                to="/contact"
+                className="font-semibold text-white transition-colors hover:text-white"
+              >
+                İletişim
+              </Link>
+              <span className="text-white/40">|</span>
+              <Link
+                to="/gizlilik-politikasi"
+                className="font-semibold text-white transition-colors hover:text-white"
+              >
+                Gizlilik Politikası
+              </Link>
+              <span className="text-white/40">|</span>
+              <Link
+                to="/kvkk"
+                className="font-semibold text-white transition-colors hover:text-white"
+              >
+                KVKK Aydınlatma Metni
+              </Link>
+              <span className="text-white/40">|</span>
+              <Link
+                to="/cerez-politikasi"
+                className="font-semibold text-white transition-colors hover:text-white"
+              >
+                Çerez Politikası
+              </Link>
+              <span className="text-white/40">|</span>
+              <Link
+                to="/kullanim-sartlari"
+                className="font-semibold text-white transition-colors hover:text-white"
+              >
+                Kullanım Şartları ve Sorumluluk Reddi
+              </Link>
+              <span className="text-white/40">|</span>
+              <Link
+                to="/acik-riza"
+                className="font-semibold text-white transition-colors hover:text-white"
+              >
+                Açık Rıza Metni
+              </Link>
             </div>
           </div>
         </div>

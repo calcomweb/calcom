@@ -98,20 +98,34 @@ const AlumniDetail = () => {
                           </a>
                         </Button>
                       )}
-                      {data.phone && (
+                      {data.instagramUrl && (
                         <Button asChild variant="outline" className="w-full">
-                          <a href={`https://wa.me/${data.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
+                          <a href={data.instagramUrl} target="_blank" rel="noreferrer">
+                            <ExternalLink />
+                            Instagram
+                          </a>
+                        </Button>
+                      )}
+                      {data.whatsappNumber && (
+                        <Button asChild variant="outline" className="w-full">
+                          <a
+                            href={`https://wa.me/${data.whatsappNumber.replace(/\D/g, "")}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
                             <Phone />
                             WhatsApp
                           </a>
                         </Button>
                       )}
-                      <Button asChild variant="secondary" className="w-full">
-                        <a href={`mailto:${data.email}`}>
-                          <Mail />
-                          {data.email}
-                        </a>
-                      </Button>
+                      {data.email && (
+                        <Button asChild variant="secondary" className="w-full">
+                          <a href={`mailto:${data.email}`}>
+                            <Mail />
+                            {data.email}
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   </div>
                 )}

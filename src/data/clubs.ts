@@ -93,7 +93,7 @@ export const fetchClubs = async (): Promise<Club[]> => {
   }
 
   const { data, error } = await supabase
-    .from("clubs")
+    .from("public_clubs")
     .select("id, slug, name, short_info, long_info, support_needed, support_types, financial_support_info, financial_support_bank_name, financial_support_iban, financial_support_description, moral_support_text, image_url, website_url, contact_email, responsible_people, developments, created_at")
     .order("name", { ascending: true });
 
@@ -115,7 +115,7 @@ export const fetchClubBySlug = async (slug: string): Promise<Club | null> => {
   }
 
   const { data, error } = await supabase
-    .from("clubs")
+    .from("public_clubs")
     .select("id, slug, name, short_info, long_info, support_needed, support_types, financial_support_info, financial_support_bank_name, financial_support_iban, financial_support_description, moral_support_text, image_url, website_url, contact_email, responsible_people, developments, created_at")
     .eq("slug", slug)
     .single();

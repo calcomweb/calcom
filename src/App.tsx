@@ -8,10 +8,15 @@ import News from "./pages/News";
 import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
 import Alumni from "./pages/Alumni";
+import AlumniCreate from "./pages/AlumniCreate";
 import AlumniDetail from "./pages/AlumniDetail";
 import Students from "./pages/Students";
 import AlumniSolidarity from "./pages/AlumniSolidarity";
 import Kvkk from "./pages/Kvkk";
+import KullanimSartlari from "./pages/KullanimSartlari";
+import CerezPolitikasi from "./pages/CerezPolitikasi";
+import AcikRiza from "./pages/AcikRiza";
+import GizlilikPolitikasi from "./pages/GizlilikPolitikasi";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
@@ -32,8 +37,13 @@ const App = () => (
           <Route path="/clubs/:slug" element={<ClubDetail />} />
           <Route path="/students" element={<Students />} />
           <Route path="/alumni" element={<Alumni />} />
+          <Route path="/alumni/yeni" element={<AlumniCreate />} />
           <Route path="/alumni/:id" element={<AlumniDetail />} />
           <Route path="/mezun-dayanisma" element={<AlumniSolidarity />} />
+          <Route path="/gizlilik-politikasi" element={<GizlilikPolitikasi />} />
+          <Route path="/cerez-politikasi" element={<CerezPolitikasi />} />
+          <Route path="/kullanim-sartlari" element={<KullanimSartlari />} />
+          <Route path="/acik-riza" element={<AcikRiza />} />
           <Route path="/kvkk" element={<Kvkk />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
