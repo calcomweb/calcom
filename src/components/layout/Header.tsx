@@ -29,6 +29,9 @@ const Header = () => {
           <Link to="/etkinlikler" className="text-sm font-medium hover:text-primary transition-colors">
             Öğrenci Etkinlikleri
           </Link>
+          <Link to="/takimlar" className="text-sm font-medium hover:text-primary transition-colors">
+            Öğrenci Takımları
+          </Link>
           <Link to="/news" className="text-sm font-medium hover:text-primary transition-colors">
             Haberler
           </Link>
@@ -83,6 +86,13 @@ const Header = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Öğrenci Etkinlikleri
+            </Link>
+            <Link
+              to="/takimlar"
+              className="text-sm font-medium hover:text-white/80 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Öğrenci Takımları
             </Link>
             <Link
               to="/news"

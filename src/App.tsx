@@ -9,11 +9,14 @@ import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
+import Teams from "./pages/Teams";
+import TeamDetail from "./pages/TeamDetail";
 import Alumni from "./pages/Alumni";
 import AlumniCreate from "./pages/AlumniCreate";
 import AlumniDetail from "./pages/AlumniDetail";
 import Students from "./pages/Students";
 import AlumniSolidarity from "./pages/AlumniSolidarity";
+import RequireAuth from "./components/auth/RequireAuth";
 import Kvkk from "./pages/Kvkk";
 import KullanimSartlari from "./pages/KullanimSartlari";
 import CerezPolitikasi from "./pages/CerezPolitikasi";
@@ -39,10 +42,14 @@ const App = () => (
           <Route path="/clubs/:slug" element={<ClubDetail />} />
           <Route path="/etkinlikler" element={<Events />} />
           <Route path="/etkinlikler/:slug" element={<EventDetail />} />
-          <Route path="/students" element={<Students />} />
-          <Route path="/alumni" element={<Alumni />} />
-          <Route path="/alumni/yeni" element={<AlumniCreate />} />
-          <Route path="/alumni/:id" element={<AlumniDetail />} />
+          <Route path="/takimlar" element={<Teams />} />
+          <Route path="/takimlar/:slug" element={<TeamDetail />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/students" element={<Students />} />
+            <Route path="/alumni" element={<Alumni />} />
+            <Route path="/alumni/yeni" element={<AlumniCreate />} />
+            <Route path="/alumni/:id" element={<AlumniDetail />} />
+          </Route>
           <Route path="/mezun-dayanisma" element={<AlumniSolidarity />} />
           <Route path="/gizlilik-politikasi" element={<GizlilikPolitikasi />} />
           <Route path="/cerez-politikasi" element={<CerezPolitikasi />} />

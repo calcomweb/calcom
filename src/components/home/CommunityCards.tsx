@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, Newspaper, Users, GraduationCap, Briefcase, Heart, Gamepad2, Languages, Link2, MessageSquare } from "lucide-react";
+import { CalendarDays, Newspaper, Users, GraduationCap, Briefcase, Heart, Rocket, Gamepad2, Languages, Link2, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const communityItems = [
@@ -24,6 +24,13 @@ const communityItems = [
     description: "Öğrenci etkinliklerini keşfet ve duyuruları takip et.",
     href: "/etkinlikler",
     iconClass: "bg-office1/15 text-office1 group-hover:bg-office1"
+  },
+  {
+    icon: Rocket,
+    title: "Öğrenci Takımları",
+    description: "Öğrenci takımlarını keşfet ve projelerini takip et.",
+    href: "/takimlar",
+    iconClass: "bg-alm-purple/15 text-alm-purple group-hover:bg-alm-purple"
   },
   {
     icon: Newspaper,
