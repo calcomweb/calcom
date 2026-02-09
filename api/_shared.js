@@ -1,0 +1,142 @@
+import { createClient } from "@supabase/supabase-js";
+import crypto from "crypto";
+
+const DEFAULT_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"];
+
+const normalizeOrigin = (origin) => origin?.trim().replace(/\/$/, "");
+
+const getAllowedOrigins = () => {
+  const configured = process.env.ALLOWED_ORIGINS?.split(",").map((origin) => normalizeOrigin(origin)).filter(Boolean);
+  return configured?.length ? configured : DEFAULT_ALLOWED_ORIGINS;
+};
+
+export const applyCors = (req, res) => {
+  const origin = normalizeOrigin(req.headers?.origin);
+  const host = req.headers?.host;
+  const allowedOrigins = getAllowedOrigins();
+
+  const isSameHost = Boolean(origin && host) && new URL(origin).host === host;
+  const isAllowed = !origin || isSameHost || allowedOrigins.includes(origin);
+
+  if (origin && isAllowed) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
+
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (!isAllowed) {
+    res.statusCode = 403;
+    res.end("Forbidden origin");
+    return false;
+  }
+
+  if (req.method === "OPTIONS") {
+    res.statusCode = 204;
+    res.end();
+    return false;
+  }
+
+  return true;
+};
+
+export const json = (res, statusCode, payload) => {
+  res.statusCode = statusCode;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(payload));
+};
+
+export const readJsonBody = (req) => {
+  if (req.body && typeof req.body === "object") {
+    return req.body;
+  }
+
+  if (typeof req.body === "string") {
+    try {
+      return JSON.parse(req.body);
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+};
+
+export const getSupabaseAdmin = () => {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+};
+
+export const trimText = (value) => (typeof value === "string" ? value.trim() : "");
+
+export const clampList = (values, maxItems) => values.slice(0, maxItems);
+
+export const filterStringList = (values) => values.filter((item) => typeof item === "string" && item.trim().length > 0);
+
+export const hashText = (value) =>
+  crypto.createHash("sha256").update(value).digest("hex");
+
+const getRequestIp = (req) => {
+  const forwarded = req.headers?.["x-forwarded-for"];
+  if (typeof forwarded === "string" && forwarded.length > 0) {
+    return forwarded.split(",")[0]?.trim();
+  }
+
+  if (Array.isArray(forwarded) && forwarded.length > 0) {
+    return forwarded[0]?.trim();
+  }
+
+  return req.headers?.["x-real-ip"] || req.socket?.remoteAddress || "";
+};
+
+export const getIpHash = (req) => {
+  const salt = process.env.IP_HASH_SALT || "";
+  const rawIp = getRequestIp(req) || "unknown";
+  return hashText(`${salt}:${rawIp}`);
+};
+
+export const enforceRateLimit = async ({
+  supabase,
+  key,
+  ipHash,
+  windowSeconds,
+  limit,
+}) => {
+  const windowStart = new Date(Date.now() - windowSeconds * 1000).toISOString();
+  const { count, error } = await supabase
+    .from("api_rate_limit_events")
+    .select("id", { count: "exact", head: true })
+    .eq("key", key)
+    .eq("ip_hash", ipHash)
+    .gte("created_at", windowStart);
+
+  if (error) {
+    throw error;
+  }
+
+  if ((count ?? 0) >= limit) {
+    const rateError = new Error("RATE_LIMITED");
+    rateError.code = "RATE_LIMITED";
+    throw rateError;
+  }
+
+  const { error: insertError } = await supabase
+    .from("api_rate_limit_events")
+    .insert({ key, ip_hash: ipHash });
+
+  if (insertError) {
+    throw insertError;
+  }
+};

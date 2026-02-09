@@ -120,30 +120,34 @@ export const createAlumniProfile = async (input: AlumniProfileInput): Promise<Al
     return fallbackAlumni[0] ?? null;
   }
 
-  const payload = {
-    graduation_year: input.graduationYear,
-    full_name: input.fullName,
-    whatsapp_number: input.whatsappNumber,
-    email: input.email ?? null,
-    linkedin_url: input.linkedinUrl ?? null,
-    instagram_url: input.instagramUrl ?? null,
-    short_bio: input.shortBio ?? null,
-    support_topics: input.supportTopics ?? [],
-    is_anonymous: input.isAnonymous ?? false,
-  };
+  const response = await fetch("/api/alumni-profiles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      graduationYear: input.graduationYear,
+      fullName: input.fullName,
+      whatsappNumber: input.whatsappNumber,
+      email: input.email ?? null,
+      linkedinUrl: input.linkedinUrl ?? null,
+      instagramUrl: input.instagramUrl ?? null,
+      shortBio: input.shortBio ?? null,
+      supportTopics: input.supportTopics ?? [],
+      isAnonymous: input.isAnonymous ?? false,
+    }),
+  });
 
-  const { data, error } = await supabase
-    .from("alumni_profiles")
-    .insert(payload)
-    .select(
-      "id, graduation_year, full_name, linkedin_url, instagram_url, email, whatsapp_number, short_bio, support_topics, is_anonymous, created_at",
-    )
-    .single();
-
-  if (error || !data) {
-    console.error("Mezun profili oluşturulamadı", error);
-    throw error ?? new Error("Mezun profili oluşturulamadı");
+  if (!response.ok) {
+    const errorPayload = await response.json().catch(() => ({}));
+    console.error("Mezun profili oluşturulamadı", errorPayload);
+    throw new Error("Mezun profili oluşturulamadı");
   }
 
-  return mapAlumni(data as AlumniRow);
+  const payload = await response.json();
+  if (!payload?.data) {
+    throw new Error("Mezun profili oluşturulamadı");
+  }
+
+  return mapAlumni(payload.data as AlumniRow);
 };

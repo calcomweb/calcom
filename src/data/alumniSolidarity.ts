@@ -115,12 +115,18 @@ export const createSolidarityTopic = async (title: string, description: string) 
     return;
   }
 
-  const { error } = await supabase
-    .from("alumni_solidarity_topics")
-    .insert({ title, description });
+  const response = await fetch("/api/solidarity/topics", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, description }),
+  });
 
-  if (error) {
-    throw error;
+  if (!response.ok) {
+    const errorPayload = await response.json().catch(() => ({}));
+    console.error("Dayanisma basligi olusturulamadi", errorPayload);
+    throw new Error("Dayanisma basligi olusturulamadi");
   }
 };
 
@@ -129,11 +135,17 @@ export const createSolidarityComment = async (topicId: string, body: string) => 
     return;
   }
 
-  const { error } = await supabase
-    .from("alumni_solidarity_comments")
-    .insert({ topic_id: topicId, body });
+  const response = await fetch("/api/solidarity/comments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ topicId, body }),
+  });
 
-  if (error) {
-    throw error;
+  if (!response.ok) {
+    const errorPayload = await response.json().catch(() => ({}));
+    console.error("Dayanisma yorumu olusturulamadi", errorPayload);
+    throw new Error("Dayanisma yorumu olusturulamadi");
   }
 };
